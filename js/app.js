@@ -17,14 +17,15 @@ const whaleShipApp = {
     background: undefined,
     // vel: 0.5,
     whalerShip: undefined,
+    islandsDens: 1200,
     islands: [],
 
-    keys: {
-        LEFT: 37,
-        RIGHT: 39,
-        UP: 38,
-        DOWN: 40,
-    },
+    // keys: {
+    //     LEFT: 37,
+    //     RIGHT: 39,
+    //     UP: 38,
+    //     DOWN: 40,
+    // },
 
     init() {
         this.setContext()
@@ -47,16 +48,29 @@ const whaleShipApp = {
         this.canvasTag.setAttribute('height', this.canvasSize.h)
     },
 
+    createIsland() {
+        this.islands.push(new Island(this.ctx, this.canvasSize))
+        console.log(this.islands)
+    },
+
     start() {
 
         this.reset()
 
         this.interval = setInterval(() => {
-            this.framesIndex > 5000 ? this.framesIndex = 0 : this.framesIndex++ //  Resets framesIndex
+            // this.framesIndex > 5000 ? this.framesIndex = 0 : this.framesIndex++ //  Resets framesIndex
 
             this.clearAll()
             this.drawAll()
             this.framesIndex++
+
+            if (this.framesIndex === 100 || this.framesIndex % this.islandsDens === 0)
+                this.createIsland()
+
+            this.islands.forEach(elm => elm.move())
+
+            this.clearIslands()
+
         }, 1000 / this.FPS)
 
     },
@@ -64,17 +78,21 @@ const whaleShipApp = {
     reset() {
         this.background = new Background(this.ctx, this.canvasSize)
         this.whalerShip = new WhalerShip(this.ctx, this.canvasSize, this.keys)
-        // this.islands = []
+        this.islands = []
     },
 
     drawAll() {
         this.background.draw()
         this.whalerShip.draw()
-        // this.islands.forEach(elm => elm.draw())
+        this.islands.forEach(elm => elm.generateIsland())
     },
 
     clearAll() {
         this.ctx.clearRect(0, 0, this.width, this.height)
+    },
+
+    clearIslands() {
+        this.islands = this.islands.filter(elm => elm.islandPos.x > -elm.islandSize.w)
     },
 
 
