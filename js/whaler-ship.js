@@ -14,7 +14,7 @@ class WhalerShip {
             y: this.canvasSize.h / 2 - this.whalerShipSize.h / 2
         }
 
-        this.vel = .5
+        this.vel = .3
         this.whalerShipVel = 7
 
         this.setListeners()

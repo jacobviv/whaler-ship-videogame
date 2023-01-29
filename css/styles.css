@@ -1,9 +1,45 @@
 body {
     padding: 0;
     margin: 0;
-    text-align: center;
+    text-align: left;
+
+    font-family: 'IBM Plex Mono', 'Courier New', Courier, monospace;
+    font-size: .9em;
+    font-weight: 500;
 }
 
 canvas {
     background-color: red;
+}
+
+.container {
+    padding-top: 2px;
+}
+
+
+section {
+    display: flex;
+    justify-content: center;
+}
+
+p {
+    margin-bottom: 0;
+}
+
+.instructions {
+    margin: 0;
+}
+
+.main {
+    font-family: 'Pirata One';
+    font-size: 3.5em;
+    text-decoration: underline;
+}
+
+.monospace {
+    font-family: 'IBM Plex Mono';
+}
+
+#fishes {
+    color: red;
 }

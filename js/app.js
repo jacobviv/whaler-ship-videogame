@@ -17,8 +17,12 @@ const whaleShipApp = {
     background: undefined,
     // vel: 0.5,
     whalerShip: undefined,
+
     islandsDens: 1200,
     islands: [],
+
+    isletsDens: 900,
+    islets: [],
 
     // keys: {
     //     LEFT: 37,
@@ -42,7 +46,7 @@ const whaleShipApp = {
     setDimensions() {
         this.canvasSize = {
             w: window.innerWidth,
-            h: window.innerHeight
+            h: window.innerHeight - 110
         }
         this.canvasTag.setAttribute('width', this.canvasSize.w)
         this.canvasTag.setAttribute('height', this.canvasSize.h)
@@ -51,6 +55,11 @@ const whaleShipApp = {
     createIsland() {
         this.islands.push(new Island(this.ctx, this.canvasSize))
         console.log(this.islands)
+    },
+
+    createIslet() {
+        this.islets.push(new Islet(this.ctx, this.canvasSize))
+        console.log(this.islets)
     },
 
     start() {
@@ -69,7 +78,17 @@ const whaleShipApp = {
 
             this.islands.forEach(elm => elm.move())
 
+            if (this.framesIndex % this.isletsDens === 0)
+                this.createIslet()
+
+            this.islets.forEach(elm => elm.move())
+
             this.clearIslands()
+            this.clearIslets()
+
+
+            this.isIslandCollision() ? this.gameOver() : null
+            this.isIsletCollision() ? this.gameOver() : null
 
         }, 1000 / this.FPS)
 
@@ -79,12 +98,14 @@ const whaleShipApp = {
         this.background = new Background(this.ctx, this.canvasSize)
         this.whalerShip = new WhalerShip(this.ctx, this.canvasSize, this.keys)
         this.islands = []
+        this.islets = []
     },
 
     drawAll() {
         this.background.draw()
         this.whalerShip.draw()
         this.islands.forEach(elm => elm.generateIsland())
+        this.islets.forEach(elm => elm.generateIslet())
     },
 
     clearAll() {
@@ -94,6 +115,37 @@ const whaleShipApp = {
     clearIslands() {
         this.islands = this.islands.filter(elm => elm.islandPos.x > -elm.islandSize.w)
     },
+
+    clearIslets() {
+        this.islets = this.islets.filter(elm => elm.isletPos.x > -elm.isletSize.w)
+    },
+
+    isIslandCollision() {
+        return this.islands.some(elm => {
+            return (
+                this.whalerShip.whalerShipPos.x + this.whalerShip.whalerShipSize.w >= elm.islandPos.x &&
+                this.whalerShip.whalerShipPos.x <= elm.islandPos.x + elm.islandSize.w &&
+                this.whalerShip.whalerShipPos.y + this.whalerShip.whalerShipSize.h >= elm.islandPos.y &&
+                this.whalerShip.whalerShipPos.y <= elm.islandPos.y + elm.islandSize.h
+            )
+        })
+    },
+
+
+    isIsletCollision() {
+        return this.islets.some(elm => {
+            return (
+                this.whalerShip.whalerShipPos.x + this.whalerShip.whalerShipSize.w >= elm.isletPos.x &&
+                this.whalerShip.whalerShipPos.x <= elm.isletPos.x + elm.isletSize.w &&
+                this.whalerShip.whalerShipPos.y + this.whalerShip.whalerShipSize.h >= elm.isletPos.y &&
+                this.whalerShip.whalerShipPos.y <= elm.isletPos.y + elm.isletSize.h
+            )
+        })
+    },
+
+
+
+
 
 
 

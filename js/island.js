@@ -11,7 +11,7 @@ class Island {
         this.islandSize = { w: 200, h: 200 }
         this.islandPos = {
             x: this.canvasSize.w + this.islandSize.w,
-            y: Math.random() * (this.canvasSize.h - this.islandSize.h) + this.islandSize.h
+            y: Math.random() * (this.canvasSize.h - this.islandSize.h * 2) + this.islandSize.h
         }
 
         this.vel = .5

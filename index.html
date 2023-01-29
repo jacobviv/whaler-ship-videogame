@@ -5,7 +5,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
     <title>Whaler Ship</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=Pirata+One&display=swap"
+        rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
 
     <link rel="stylesheet" href="./css/styles.css">
 </head>
@@ -13,16 +24,71 @@
 <body>
 
     <canvas></canvas>
+
     <!-- <script src=".js/seagull.js"></script> -->
     <!-- <script src=".js/pirate-ship.js"></script> -->
     <!-- <script src=".js/fish.js"></script> -->
     <!-- <script src=".js/whale.js"></script> -->
     <script src="./js/whaler-ship.js"></script>
-    <!-- <script src="./js/islet.js"></script> -->
+    <script src="./js/islet.js"></script>
     <script src="./js/island.js"></script>
     <script src="./js/background.js"></script>
     <script src="./js/app.js"></script>
     <script src="./js/script.js"></script>
+
+    <!-- Simple audio playback -->
+    <audio src="./audio/BREZO-HUIDA.mp3" autoplay>
+    </audio>
+
+
+    <section class="instructions">
+
+        <div class="container">
+
+            <div class="row">
+                <div class="col">
+                    <p class="main">Whaler Ship</p>
+                </div>
+
+                <div class="col">
+
+                    <!-- <audio controls src="./audio/BREZO-HUIDA.mp3" autoplay>
+                        <a href="./audio/BREZO-HUIDA.mp3"></a>
+                    </audio> -->
+
+                </div>
+
+                <div class="col">
+                    <ul>
+                        <li>Whalers Boat: Space</li>
+                        <li>Fishes in cellar: XX </li>
+                        <li>Whales in cellar: XX</li>
+                        <li>Total time: XX</li>
+                    </ul>
+                </div>
+
+                <div class="col">
+                    <ul>
+                        <li>North: Arrow Up</li>
+                        <li>South: Arrow Down</li>
+                        <li>East: Arrow Right</li>
+                        <li>West: Arrow Left</li>
+
+                    </ul>
+                </div>
+
+                <div class="col">
+                    <ul>
+                        <li>North-East: R</li>
+                        <li>Nort-West: E</li>
+                        <li>South-East: V</li>
+                        <li>South-West: C</li>
+                    </ul>
+                </div>
+
+            </div>
+
+    </section>
 
 </body>
 
