@@ -18,7 +18,7 @@ class Island {
 
     }
 
-    generateIsland() {
+    draw() {
         this.ctx.fillStyle = 'black'
         this.ctx.fillRect(this.islandPos.x, this.islandPos.y, this.islandSize.w, this.islandSize.h)
     }

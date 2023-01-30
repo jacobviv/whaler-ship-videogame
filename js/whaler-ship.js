@@ -15,11 +15,22 @@ class WhalerShip {
         }
 
         this.vel = .3
-        this.whalerShipVel = 7
+        this.whalerShipVel = 3
 
         this.setListeners()
 
         this.margin = 20
+
+        this.canMove = {
+            north: false,
+            south: false,
+            east: false,
+            west: false,
+            northEast: false,
+            northWest: false,
+            southEast: false,
+            southWest: false
+        }
 
     }
 
@@ -36,44 +47,97 @@ class WhalerShip {
 
         document.onkeydown = evt => {
 
-            // Movement keys
-            if (evt.key === 'ArrowLeft'
-                && this.whalerShipPos.x > 0 + this.margin)
-                this.whalerShipPos.x -= this.whalerShipVel
-            if (evt.key === 'ArrowRight'
-                && this.whalerShipPos.x < this.canvasSize.w - this.whalerShipSize.w - this.margin)
-                this.whalerShipPos.x += this.whalerShipVel
-            if (evt.key === 'ArrowUp'
-                && this.whalerShipPos.y > 0 + this.margin)
-                this.whalerShipPos.y -= this.whalerShipVel
-            if (evt.key === 'ArrowDown'
-                && this.whalerShipPos.y < this.canvasSize.h - this.whalerShipSize.h - this.margin)
-                this.whalerShipPos.y += this.whalerShipVel
-            if (evt.key === 'r'
-                && this.whalerShipPos.y > 0 + this.margin
-                && this.whalerShipPos.x < this.canvasSize.w - this.whalerShipSize.w - this.margin) {
-                this.whalerShipPos.y -= this.whalerShipVel
-                this.whalerShipPos.x += this.whalerShipVel
-            }
-            if (evt.key === 'v'
-                && this.whalerShipPos.y < this.canvasSize.h - this.whalerShipSize.h - this.margin
-                && this.whalerShipPos.x < this.canvasSize.w - this.whalerShipSize.w - this.margin) {
-                this.whalerShipPos.y += this.whalerShipVel
-                this.whalerShipPos.x += this.whalerShipVel
-            }
-            if (evt.key === 'e'
-                && this.whalerShipPos.y > 0 + this.margin
-                && this.whalerShipPos.x > 0 + this.margin) {
-                this.whalerShipPos.y -= this.whalerShipVel
-                this.whalerShipPos.x -= this.whalerShipVel
-            }
-            if (evt.key === 'c'
-                && this.whalerShipPos.y < this.canvasSize.h - this.whalerShipSize.h - this.margin
-                && this.whalerShipPos.x > 0 + this.margin) {
-                this.whalerShipPos.y += this.whalerShipVel
-                this.whalerShipPos.x -= this.whalerShipVel
-            }
+            const { key } = evt
+
+            if (key === 'ArrowLeft') this.canMove.west = true
+
+            if (key === 'ArrowRight') this.canMove.east = true
+
+            if (key === 'ArrowUp') this.canMove.north = true
+
+            if (key === 'ArrowDown') this.canMove.south = true
+
+            if (key === 'r') this.canMove.northEast = true
+
+            if (key === 'v') this.canMove.northWest = true
+
+            if (key === 'e') this.canMove.southEast = true
+
+            if (key === 'c') this.canMove.southWest = true
+
         }
 
+        document.onkeyup = evt => {
+
+            const { key } = evt
+
+            if (key === 'ArrowLeft') this.canMove.west = false
+
+            if (key === 'ArrowRight') this.canMove.east = false
+
+            if (key === 'ArrowUp') this.canMove.north = false
+
+            if (key === 'ArrowDown') this.canMove.south = false
+
+            if (key === 'r') this.canMove.northEast = false
+
+            if (key === 'v') this.canMove.northWest = false
+
+            if (key === 'e') this.canMove.southEast = false
+
+            if (key === 'c') this.canMove.southWest = false
+        }
     }
+
+    moveWest() {
+        if (this.whalerShipPos.x > 0 + this.margin)
+            this.whalerShipPos.x -= this.whalerShipVel
+    }
+
+    moveEast() {
+        if (this.whalerShipPos.x < this.canvasSize.w - this.whalerShipSize.w - this.margin)
+            this.whalerShipPos.x += this.whalerShipVel
+    }
+
+    moveNorth() {
+        if (this.whalerShipPos.y > 0 + this.margin)
+            this.whalerShipPos.y -= this.whalerShipVel
+    }
+
+    moveSouth() {
+        if (this.whalerShipPos.y < this.canvasSize.h - this.whalerShipSize.h - this.margin)
+            this.whalerShipPos.y += this.whalerShipVel
+    }
+
+    moveNorthEast() {
+        if (this.whalerShipPos.y > 0 + this.margin
+            && this.whalerShipPos.x < this.canvasSize.w - this.whalerShipSize.w - this.margin) {
+            this.whalerShipPos.y -= this.whalerShipVel / 2
+            this.whalerShipPos.x += this.whalerShipVel / 2
+        }
+    }
+
+    moveSouthEast() {
+        if (this.whalerShipPos.y < this.canvasSize.h - this.whalerShipSize.h - this.margin
+            && this.whalerShipPos.x < this.canvasSize.w - this.whalerShipSize.w - this.margin) {
+            this.whalerShipPos.y -= this.whalerShipVel / 2
+            this.whalerShipPos.x -= this.whalerShipVel / 2
+        }
+    }
+
+    moveNorthWest() {
+        if (this.whalerShipPos.y > 0 + this.margin && this.whalerShipPos.x > 0 + this.margin) {
+            this.whalerShipPos.y += this.whalerShipVel / 2
+            this.whalerShipPos.x += this.whalerShipVel / 2
+        }
+    }
+
+    moveSouthWest() {
+        if (this.whalerShipPos.y < this.canvasSize.h - this.whalerShipSize.h - this.margin
+            && this.whalerShipPos.x > 0 + this.margin) {
+            this.whalerShipPos.y += this.whalerShipVel / 2
+            this.whalerShipPos.x -= this.whalerShipVel / 2
+        }
+    }
+
 }

@@ -18,7 +18,7 @@ class Islet {
 
     }
 
-    generateIslet() {
+    draw() {
         this.ctx.fillStyle = 'black'
         this.ctx.fillRect(this.isletPos.x, this.isletPos.y, this.isletSize.w, this.isletSize.h)
     }
