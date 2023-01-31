@@ -59,9 +59,9 @@ class WhalerShip {
 
             if (key === 'r') this.canMove.northEast = true
 
-            if (key === 'v') this.canMove.northWest = true
+            if (key === 'e') this.canMove.northWest = true
 
-            if (key === 'e') this.canMove.southEast = true
+            if (key === 'v') this.canMove.southEast = true
 
             if (key === 'c') this.canMove.southWest = true
 
@@ -81,16 +81,16 @@ class WhalerShip {
 
             if (key === 'r') this.canMove.northEast = false
 
-            if (key === 'v') this.canMove.northWest = false
+            if (key === 'e') this.canMove.northWest = false
 
-            if (key === 'e') this.canMove.southEast = false
+            if (key === 'v') this.canMove.southEast = false
 
             if (key === 'c') this.canMove.southWest = false
         }
     }
 
     moveWest() {
-        if (this.whalerShipPos.x > 0 + this.margin)
+        if (this.whalerShipPos.x > this.margin)
             this.whalerShipPos.x -= this.whalerShipVel
     }
 
@@ -100,44 +100,13 @@ class WhalerShip {
     }
 
     moveNorth() {
-        if (this.whalerShipPos.y > 0 + this.margin)
+        if (this.whalerShipPos.y > this.margin)
             this.whalerShipPos.y -= this.whalerShipVel
     }
 
     moveSouth() {
         if (this.whalerShipPos.y < this.canvasSize.h - this.whalerShipSize.h - this.margin)
             this.whalerShipPos.y += this.whalerShipVel
-    }
-
-    moveNorthEast() {
-        if (this.whalerShipPos.y > 0 + this.margin
-            && this.whalerShipPos.x < this.canvasSize.w - this.whalerShipSize.w - this.margin) {
-            this.whalerShipPos.y -= this.whalerShipVel / 2
-            this.whalerShipPos.x += this.whalerShipVel / 2
-        }
-    }
-
-    moveSouthEast() {
-        if (this.whalerShipPos.y < this.canvasSize.h - this.whalerShipSize.h - this.margin
-            && this.whalerShipPos.x < this.canvasSize.w - this.whalerShipSize.w - this.margin) {
-            this.whalerShipPos.y -= this.whalerShipVel / 2
-            this.whalerShipPos.x -= this.whalerShipVel / 2
-        }
-    }
-
-    moveNorthWest() {
-        if (this.whalerShipPos.y > 0 + this.margin && this.whalerShipPos.x > 0 + this.margin) {
-            this.whalerShipPos.y += this.whalerShipVel / 2
-            this.whalerShipPos.x += this.whalerShipVel / 2
-        }
-    }
-
-    moveSouthWest() {
-        if (this.whalerShipPos.y < this.canvasSize.h - this.whalerShipSize.h - this.margin
-            && this.whalerShipPos.x > 0 + this.margin) {
-            this.whalerShipPos.y += this.whalerShipVel / 2
-            this.whalerShipPos.x -= this.whalerShipVel / 2
-        }
     }
 
 }

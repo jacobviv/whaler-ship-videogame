@@ -27,8 +27,9 @@ const whaleShipApp = {
     rocksDens: 600,
     rocks: [],
 
-    fishesDens: 1200,
+    fishesDens: 30,
     fishes: [],
+    maxFishes: 40,
     fishesCounter: 0,
 
     init() {
@@ -66,7 +67,8 @@ const whaleShipApp = {
 
     createFish() {
         this.fishes.push(new Fish(this.ctx, this.canvasSize))
-        console.log(this.fishes)
+        if (this.fishes.length >= this.maxFishes) this.fishes.shift()
+        // console.log(this.fishes)
     },
 
     start() {
@@ -82,6 +84,8 @@ const whaleShipApp = {
             this.createAll()
             this.drawAll()
             this.checkCollision()
+            this.isIslandCollision()
+            this.isFishCollision()
 
         }, 1000 / this.FPS)
 
@@ -137,11 +141,10 @@ const whaleShipApp = {
     },
 
     checkCollision() {
-        // if (this.isIslandCollision) this.whalerShip.whalerShipPos.x = this.islands.islandPos.x + this.whalerShip.whalerShipSize.w
-        this.isIslandCollision() ? this.gameOver() : null
+        //this.isIslandCollision() ? this.magnetPos() : null
         this.isIsletCollision() ? this.gameOver() : null
         this.isRockCollision() ? this.gameOver() : null
-        if (this.isRockCollision === true) alert("Rock Collision")
+        // this.isFishCollision() ? this.fishCapture() : null
     },
 
     clearIslands() {
@@ -161,13 +164,37 @@ const whaleShipApp = {
     },
 
     isIslandCollision() {
-        return this.islands.some(elm => {
-            return (
+
+        this.islands.forEach(elm => {
+            if (
                 this.whalerShip.whalerShipPos.x + this.whalerShip.whalerShipSize.w >= elm.islandPos.x &&
-                this.whalerShip.whalerShipPos.x <= elm.islandPos.x + elm.islandSize.w &&
+                this.whalerShip.whalerShipPos.x < elm.islandPos.x + elm.islandSize.w &&
                 this.whalerShip.whalerShipPos.y + this.whalerShip.whalerShipSize.h >= elm.islandPos.y &&
                 this.whalerShip.whalerShipPos.y <= elm.islandPos.y + elm.islandSize.h
-            )
+            ) {
+                islandCollided = (elm)
+                console.log({ islandCollided })
+
+                if (this.whalerShip.whalerShipPos.x = islandCollided.islandPos.x - this.whalerShip.whalerShipSize.w) {
+                    this.whalerShip.whalerShipPos.x += islandCollided.vel
+                    this.whalerShip.whalerShipPos.x = islandCollided.islandPos.x - this.whalerShip.whalerShipSize.w
+                }
+
+                if (this.whalerShip.whalerShipPos.y + this.whalerShip.whalerShipSize.h === islandCollided.islandPos.y) {
+                    this.whalerShip.whalerShipPos.x += islandCollided.vel
+                    this.whalerShip.whalerShipPos.x = islandCollided.islandPos.x + this.whalerShip.whalerShipSize.w
+                }
+
+                if (this.whalerShip.whalerShipPos.y === islandCollided.islandPos.y + islandCollided.islandSize.h) {
+                    this.whalerShip.whalerShipPos.x += islandCollided.vel
+                    this.whalerShip.whalerShipPos.x = islandCollided.islandPos.x + this.whalerShip.whalerShipSize.w
+                }
+
+                if (this.whalerShip.whalerShipPos.x === islandCollided.islandPos.x + islandCollided.islandSize.w) {
+                    this.whalerShip.whalerShipPos.x += islandCollided.vel
+                    this.whalerShip.whalerShipPos.x = islandCollided.islandPos.x + this.islands.islandSize.w
+                }
+            }
         })
     },
 
@@ -193,6 +220,30 @@ const whaleShipApp = {
             )
         })
     },
+
+    isFishCollision() {
+        this.fishes.forEach(elm => {
+            if (
+                this.whalerShip.whalerShipPos.x + this.whalerShip.whalerShipSize.w >= elm.fishPos.x + elm.fishSize.w &&
+                this.whalerShip.whalerShipPos.x <= elm.fishPos.x &&
+                this.whalerShip.whalerShipPos.y + this.whalerShip.whalerShipSize.h >= elm.fishPos.y + elm.fishSize.h &&
+                this.whalerShip.whalerShipPos.y + this.whalerShip.whalerShipSize.h / 2 <= elm.fishPos.y + elm.fishSize.h
+            ) {
+                fishCaptured = this.fishes.indexOf(elm)
+                console.log({ fishCaptured })
+                this.fishes.splice(fishCaptured, 1)
+                this.fishesCounter++
+                console.log(this.fishesCounter)
+            }
+        })
+    },
+
+
+
+
+    // magnetPos() {
+    //     this.whalerShip.whalerShipPos.x = this.islands.islandPos.x - this.whalerShip.whalerShipSize.w
+    // },
 
 
 
