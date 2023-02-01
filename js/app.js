@@ -32,6 +32,17 @@ const whaleShipApp = {
     maxFishes: 40,
     fishesCounter: 0,
 
+    whalesDens: 600,
+    whales: [],
+    maxWhales: 4,
+    whalesCounter: 0,
+
+    lifesCounter: 1,
+
+    score: 0,
+
+    harpoons: [],
+
     init() {
         this.setContext()
         this.setDimensions()
@@ -68,8 +79,17 @@ const whaleShipApp = {
     createFish() {
         this.fishes.push(new Fish(this.ctx, this.canvasSize))
         if (this.fishes.length >= this.maxFishes) this.fishes.shift()
-        // console.log(this.fishes)
     },
+
+    createWhale() {
+        this.whales.push(new Whale(this.ctx, this.canvasSize))
+        if (this.whales.length >= this.maxWhales) this.whales.shift()
+        // console.log(this.whales)
+    },
+
+    // createHarpoon() {
+    //     this.harpoons.push(new Harpoon(this.ctx, this.canvasSize, this.whalerShip))
+    // },
 
     start() {
 
@@ -86,6 +106,9 @@ const whaleShipApp = {
             this.checkCollision()
             this.isIslandCollision()
             this.isFishCollision()
+            // this.isHarpoonCollision()
+            this.isWhaleCollision()
+            this.scoreIncreaser()
 
         }, 1000 / this.FPS)
 
@@ -98,14 +121,18 @@ const whaleShipApp = {
         this.islets = []
         this.rocks = []
         this.fishes = []
+        this.whales = []
+        this.harpoons = []
     },
 
     drawAll() {
         this.background.draw()
-        this.islands.forEach(elm => elm.draw())
-        this.islets.forEach(elm => elm.draw())
-        this.rocks.forEach(elm => elm.draw())
         this.fishes.forEach(elm => elm.draw())
+        this.whales.forEach(elm => elm.draw())
+        this.rocks.forEach(elm => elm.draw())
+        this.islets.forEach(elm => elm.draw())
+        this.islands.forEach(elm => elm.draw())
+        // this.harpoons.forEach(elm => elm.draw())
         this.whalerShip.draw()
     },
 
@@ -114,15 +141,13 @@ const whaleShipApp = {
         this.islets.forEach(elm => elm.move())
         this.rocks.forEach(elm => elm.move())
         this.fishes.forEach(elm => elm.move())
+        this.whales.forEach(elm => elm.move())
+        // this.harpoons.forEach(elm => elm.move())
 
         if (this.whalerShip.canMove.north) this.whalerShip.moveNorth()
         if (this.whalerShip.canMove.south) this.whalerShip.moveSouth()
         if (this.whalerShip.canMove.east) this.whalerShip.moveEast()
         if (this.whalerShip.canMove.west) this.whalerShip.moveWest()
-        if (this.whalerShip.canMove.northEast) this.whalerShip.moveNorthEast()
-        if (this.whalerShip.canMove.southEast) this.whalerShip.moveSouthEast()
-        if (this.whalerShip.canMove.northWest) this.whalerShip.moveNorthWest()
-        if (this.whalerShip.canMove.southWest) this.whalerShip.moveSouthWest()
     },
 
     createAll() {
@@ -130,6 +155,8 @@ const whaleShipApp = {
         this.framesIndex % this.isletsDens === 0 && this.createIslet()
         this.framesIndex % this.isletsDens === 0 && this.createRock()
         this.framesIndex % this.fishesDens === 0 && this.createFish()
+        this.framesIndex % this.whalesDens === 0 && this.createWhale()
+
     },
 
     clearAll() {
@@ -138,13 +165,15 @@ const whaleShipApp = {
         this.clearIslets()
         this.clearRocks()
         this.clearFishes()
+        this.clearWhales()
     },
 
     checkCollision() {
-        //this.isIslandCollision() ? this.magnetPos() : null
-        this.isIsletCollision() ? this.gameOver() : null
-        this.isRockCollision() ? this.gameOver() : null
-        // this.isFishCollision() ? this.fishCapture() : null
+        if (this.lifesCounter > 0) {
+            this.isIslandCollision() ? (this.reset(), this.lifesCounter--) : null
+            this.isIsletCollision() ? (this.reset(), this.lifesCounter--) : null
+            this.isRockCollision() ? (this.reset(), this.lifesCounter--) : null
+        } else this.gameOver()
     },
 
     clearIslands() {
@@ -163,41 +192,20 @@ const whaleShipApp = {
         this.fishes = this.fishes.filter(elm => elm.fishPos.x > -elm.fishSize.w)
     },
 
-    isIslandCollision() {
-
-        this.islands.forEach(elm => {
-            if (
-                this.whalerShip.whalerShipPos.x + this.whalerShip.whalerShipSize.w >= elm.islandPos.x &&
-                this.whalerShip.whalerShipPos.x < elm.islandPos.x + elm.islandSize.w &&
-                this.whalerShip.whalerShipPos.y + this.whalerShip.whalerShipSize.h >= elm.islandPos.y &&
-                this.whalerShip.whalerShipPos.y <= elm.islandPos.y + elm.islandSize.h
-            ) {
-                islandCollided = (elm)
-                console.log({ islandCollided })
-
-                if (this.whalerShip.whalerShipPos.x = islandCollided.islandPos.x - this.whalerShip.whalerShipSize.w) {
-                    this.whalerShip.whalerShipPos.x += islandCollided.vel
-                    this.whalerShip.whalerShipPos.x = islandCollided.islandPos.x - this.whalerShip.whalerShipSize.w
-                }
-
-                if (this.whalerShip.whalerShipPos.y + this.whalerShip.whalerShipSize.h === islandCollided.islandPos.y) {
-                    this.whalerShip.whalerShipPos.x += islandCollided.vel
-                    this.whalerShip.whalerShipPos.x = islandCollided.islandPos.x + this.whalerShip.whalerShipSize.w
-                }
-
-                if (this.whalerShip.whalerShipPos.y === islandCollided.islandPos.y + islandCollided.islandSize.h) {
-                    this.whalerShip.whalerShipPos.x += islandCollided.vel
-                    this.whalerShip.whalerShipPos.x = islandCollided.islandPos.x + this.whalerShip.whalerShipSize.w
-                }
-
-                if (this.whalerShip.whalerShipPos.x === islandCollided.islandPos.x + islandCollided.islandSize.w) {
-                    this.whalerShip.whalerShipPos.x += islandCollided.vel
-                    this.whalerShip.whalerShipPos.x = islandCollided.islandPos.x + this.islands.islandSize.w
-                }
-            }
-        })
+    clearWhales() {
+        this.whales = this.whales.filter(elm => elm.whalePos.x > -elm.whaleSize.w)
     },
 
+    isIslandCollision() {
+        return this.islands.some(elm => {
+            return (
+                this.whalerShip.whalerShipPos.x + this.whalerShip.whalerShipSize.w >= elm.islandPos.x &&
+                this.whalerShip.whalerShipPos.x <= elm.islandPos.x + elm.islandSize.w &&
+                this.whalerShip.whalerShipPos.y + this.whalerShip.whalerShipSize.h >= elm.islandPos.y &&
+                this.whalerShip.whalerShipPos.y + this.whalerShip.whalerShipSize.h / 2 <= elm.islandPos.y + elm.islandSize.h
+            )
+        })
+    },
 
     isIsletCollision() {
         return this.islets.some(elm => {
@@ -205,7 +213,7 @@ const whaleShipApp = {
                 this.whalerShip.whalerShipPos.x + this.whalerShip.whalerShipSize.w >= elm.isletPos.x &&
                 this.whalerShip.whalerShipPos.x <= elm.isletPos.x + elm.isletSize.w &&
                 this.whalerShip.whalerShipPos.y + this.whalerShip.whalerShipSize.h >= elm.isletPos.y &&
-                this.whalerShip.whalerShipPos.y <= elm.isletPos.y + elm.isletSize.h
+                this.whalerShip.whalerShipPos.y + this.whalerShip.whalerShipSize.h / 2 <= elm.isletPos.y + elm.isletSize.h
             )
         })
     },
@@ -216,7 +224,7 @@ const whaleShipApp = {
                 this.whalerShip.whalerShipPos.x + this.whalerShip.whalerShipSize.w >= elm.rockPos.x &&
                 this.whalerShip.whalerShipPos.x <= elm.rockPos.x + elm.rockSize.w &&
                 this.whalerShip.whalerShipPos.y + this.whalerShip.whalerShipSize.h >= elm.rockPos.y &&
-                this.whalerShip.whalerShipPos.y <= elm.rockPos.y + elm.rockSize.h
+                this.whalerShip.whalerShipPos.y + this.whalerShip.whalerShipSize.h / 2 <= elm.rockPos.y + elm.rockSize.h
             )
         })
     },
@@ -224,33 +232,63 @@ const whaleShipApp = {
     isFishCollision() {
         this.fishes.forEach(elm => {
             if (
-                this.whalerShip.whalerShipPos.x + this.whalerShip.whalerShipSize.w >= elm.fishPos.x + elm.fishSize.w &&
-                this.whalerShip.whalerShipPos.x <= elm.fishPos.x &&
-                this.whalerShip.whalerShipPos.y + this.whalerShip.whalerShipSize.h >= elm.fishPos.y + elm.fishSize.h &&
-                this.whalerShip.whalerShipPos.y + this.whalerShip.whalerShipSize.h / 2 <= elm.fishPos.y + elm.fishSize.h
+                this.whalerShip.whalerShipPos.x + this.whalerShip.whalerShipSize.w >= elm.fishPos.x &&
+                this.whalerShip.whalerShipPos.x <= elm.fishPos.x + elm.fishSize.w &&
+                this.whalerShip.whalerShipPos.y + this.whalerShip.whalerShipSize.h >= elm.fishPos.y &&
+                this.whalerShip.whalerShipPos.y + this.whalerShip.whalerShipSize.h / 2 <= elm.fishPos.y
             ) {
                 fishCaptured = this.fishes.indexOf(elm)
-                console.log({ fishCaptured })
+                // console.log({ fishCaptured })
                 this.fishes.splice(fishCaptured, 1)
                 this.fishesCounter++
-                console.log(this.fishesCounter)
+                console.log('Fishes', this.fishesCounter)
+                document.querySelector('#fishes-counter').innerHTML = this.fishesCounter
+
+                if (this.fishesCounter % 45 === 0) {
+                    this.lifesCounter++
+                }
+                document.querySelector('#lifes-counter').innerHTML = this.lifesCounter
+
+
             }
         })
     },
 
+    isWhaleCollision() {
+        this.whales.forEach(elm => {
+            if (
+                this.whalerShip.whalerShipPos.x + this.whalerShip.whalerShipSize.w >= elm.whalePos.x &&
+                this.whalerShip.whalerShipPos.x <= elm.whalePos.x + elm.whaleSize.w &&
+                this.whalerShip.whalerShipPos.y + this.whalerShip.whalerShipSize.h >= elm.whalePos.y &&
+                this.whalerShip.whalerShipPos.y + this.whalerShip.whalerShipSize.h / 2 <= elm.whalePos.y
+            ) {
+                whaleCaptured = this.whales.indexOf(elm)
+                // console.log({ whaleCaptured })
+                this.whales.splice(whaleCaptured, 1)
+                this.whalesCounter++
+                this.lifesCounter++
+                console.log('whales', this.whalesCounter)
+                document.querySelector('#whales-counter').innerHTML = this.whalesCounter
+                document.querySelector('#lifes-counter').innerHTML = this.lifesCounter
 
 
+            }
+        })
+    },
 
-    // magnetPos() {
-    //     this.whalerShip.whalerShipPos.x = this.islands.islandPos.x - this.whalerShip.whalerShipSize.w
-    // },
-
-
-
-
+    scoreIncreaser() {
+        if (this.lifesCounter === 1) {
+            this.score = this.fishesCounter * 10 + this.whalesCounter * 1000
+        } else {
+            this.score = this.lifesCounter * 100 + this.fishesCounter * 10 + this.whalesCounter * 1000
+        }
+        document.querySelector('#score-counter').innerHTML = this.score
+    },
 
     gameOver() {
         clearInterval(this.interval)
+        document.querySelector('#alert').innerHTML = ' '
+        document.querySelector('#lifes-counter').innerHTML = 'THOU SUNKST THE SHIP!'
     }
 
 }

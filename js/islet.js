@@ -8,7 +8,7 @@ class Islet {
         // this.image = new Image()
         // this.image.src = './img/islet.png'
 
-        this.isletSize = { w: 100, h: 100 }
+        this.isletSize = { w: 120, h: 100 }
         this.isletPos = {
             x: this.canvasSize.w + this.isletSize.w,
             y: Math.random() * (this.canvasSize.h - this.isletSize.h * 2) + this.isletSize.h

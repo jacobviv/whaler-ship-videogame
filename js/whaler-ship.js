@@ -8,14 +8,15 @@ class WhalerShip {
         this.image = new Image()
         this.image.src = './img/whaler-ship.png'
 
-        this.whalerShipSize = { w: 80, h: 70 }
+        this.whalerShipSize = { w: 64, h: 45 }
         this.whalerShipPos = {
             x: this.canvasSize.w / 2 - this.whalerShipSize.w / 2,
             y: this.canvasSize.h / 2 - this.whalerShipSize.h / 2
         }
+        this.harpoons = []
 
         this.vel = .3
-        this.whalerShipVel = 3
+        this.whalerShipVel = 1.75
 
         this.setListeners()
 
@@ -37,6 +38,8 @@ class WhalerShip {
     draw() {
         this.ctx.drawImage(this.image, this.whalerShipPos.x, this.whalerShipPos.y, this.whalerShipSize.w, this.whalerShipSize.h)
         this.move()
+        this.clearHarpoons()
+        this.harpoons.forEach(elm => elm.draw())
     }
 
     move() {
@@ -57,13 +60,10 @@ class WhalerShip {
 
             if (key === 'ArrowDown') this.canMove.south = true
 
-            if (key === 'r') this.canMove.northEast = true
+            if (key === 'n') window.location.reload()
 
-            if (key === 'e') this.canMove.northWest = true
+            if (key === ' ') this.shoot()
 
-            if (key === 'v') this.canMove.southEast = true
-
-            if (key === 'c') this.canMove.southWest = true
 
         }
 
@@ -109,4 +109,14 @@ class WhalerShip {
             this.whalerShipPos.y += this.whalerShipVel
     }
 
-}
+    shoot() {
+        this.harpoons.push(new Harpoon(this.ctx, this.canvasSize, this.whalerShipPos, this.whalerShipSize))
+        console.log(this.harpoons)
+    }
+
+    clearHarpoons() {
+        this.harpoons = this.harpoons.filter(elm => elm.harpoonPos.y < this.whalerShipPos.y + this.whalerShipSize.h)
+    }
+
+
+}   

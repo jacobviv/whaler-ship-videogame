@@ -6,7 +6,7 @@ class Background {
         this.canvasSize = canvasSize
 
         this.image = new Image()
-        this.image.src = './img/pattern1.svg'
+        this.image.src = './img/pattern2.svg'
 
         this.pos = { x: 0, y: 0 }
 

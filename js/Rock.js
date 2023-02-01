@@ -8,7 +8,7 @@ class Rock {
         // this.image = new Image()
         // this.image.src = './img/rock.png'
 
-        this.rockSize = { w: 50, h: 50 }
+        this.rockSize = { w: 45, h: 55 }
         this.rockPos = {
             x: this.canvasSize.w + this.rockSize.w,
             y: Math.random() * (this.canvasSize.h - this.rockSize.h * 2) + this.rockSize.h
