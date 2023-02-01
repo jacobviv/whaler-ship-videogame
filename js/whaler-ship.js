@@ -15,8 +15,8 @@ class WhalerShip {
         }
         this.harpoons = []
 
-        this.vel = .3
-        this.whalerShipVel = 1.75
+        this.vel = .6
+        this.whalerShipVel = 1.2
 
         this.setListeners()
 
@@ -26,11 +26,7 @@ class WhalerShip {
             north: false,
             south: false,
             east: false,
-            west: false,
-            northEast: false,
-            northWest: false,
-            southEast: false,
-            southWest: false
+            west: false
         }
 
     }

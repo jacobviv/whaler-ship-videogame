@@ -15,11 +15,11 @@ class Harpoon {
 
         this.harpoons = harpoons
 
-        this.harpoonSize = { w: 25, h: 3 }
+        this.harpoonSize = { w: 20, h: 3 }
 
-        this.vel = { x: 2.5, y: -2 }
+        this.vel = { x: 2, y: -1.5 }
 
-        this.gravity = .1;
+        this.gravity = .1
     }
 
     init() {
