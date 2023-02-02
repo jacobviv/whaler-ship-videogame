@@ -10,13 +10,14 @@ const whaleShipApp = {
     canvasTag: undefined,
     ctx: undefined,
     canvasSize: { w: undefined, h: undefined },
-    instructionsHeight: 115,
+    instructionsHeight: 125,
 
     FPS: 60,
     framesIndex: 0,
     interval: undefined,
     background: undefined,
     whalerShip: undefined,
+    gloryInterval: undefined,
 
     islandsDens: 1200,
     islands: [],
@@ -36,6 +37,9 @@ const whaleShipApp = {
     whales: [],
     maxWhales: 4,
     whalesCounter: 0,
+
+    piratesDens: 300,
+    pirates: [],
 
     lifesCounter: 1,
 
@@ -85,6 +89,10 @@ const whaleShipApp = {
         console.log(this.whales)
     },
 
+    createPirate() {
+        this.pirates.push(new Pirate(this.ctx, this.canvasSize))
+    },
+
     // createHarpoon() {
     //     this.harpoons.push(new Harpoon(this.ctx, this.canvasSize, this.whalerShip))
     // },
@@ -106,7 +114,9 @@ const whaleShipApp = {
             this.isFishCollision()
             this.isWhaleCollision()
             this.isWhaleCapture()
+            this.isPirateCollision()
             this.scoreIncreaser()
+            this.gameGlory()
 
         }, 1000 / this.FPS)
 
@@ -121,17 +131,19 @@ const whaleShipApp = {
         this.fishes = []
         this.whales = []
         this.harpoons = []
+        this.pirates = []
     },
 
     drawAll() {
         this.background.draw()
         this.fishes.forEach(elm => elm.draw())
         this.whales.forEach(elm => elm.draw())
+        this.pirates.forEach(elm => elm.draw())
         this.rocks.forEach(elm => elm.draw())
         this.islets.forEach(elm => elm.draw())
         this.islands.forEach(elm => elm.draw())
         // this.harpoons.forEach(elm => elm.draw())
-        this.whalerShip.draw()
+        this.whalerShip.draw(this.framesIndex)
     },
 
     moveAll() {
@@ -140,6 +152,7 @@ const whaleShipApp = {
         this.rocks.forEach(elm => elm.move())
         this.fishes.forEach(elm => elm.move())
         this.whales.forEach(elm => elm.move())
+        this.pirates.forEach(elm => elm.move())
         // this.harpoons.forEach(elm => elm.move())
 
         if (this.whalerShip.canMove.north) this.whalerShip.moveNorth()
@@ -154,7 +167,7 @@ const whaleShipApp = {
         this.framesIndex % this.isletsDens === 0 && this.createRock()
         this.framesIndex % this.fishesDens === 0 && this.createFish()
         this.framesIndex % this.whalesDens === 0 && this.createWhale()
-
+        this.framesIndex % this.piratesDens === 0 && this.createPirate()
     },
 
     clearAll() {
@@ -164,6 +177,7 @@ const whaleShipApp = {
         this.clearRocks()
         this.clearFishes()
         this.clearWhales()
+        this.clearPirates()
     },
 
     checkCollision() {
@@ -172,6 +186,7 @@ const whaleShipApp = {
             this.isIsletCollision() ? (this.reset(), this.lifesCounter--) : null
             this.isRockCollision() ? (this.reset(), this.lifesCounter--) : null
             this.isWhaleCollision() ? (this.reset(), this.lifesCounter -= .5) : null
+            this.isPirateCollision() ? (this.reset(), this.lifesCounter--) : null
         } else this.gameOver()
     },
 
@@ -193,6 +208,10 @@ const whaleShipApp = {
 
     clearWhales() {
         this.whales = this.whales.filter(elm => elm.whalePos.x > -elm.whaleSize.w)
+    },
+
+    clearPirates() {
+        this.pirates = this.pirates.filter(elm => elm.piratePos.x > -elm.pirateSize.w)
     },
 
     isIslandCollision() {
@@ -284,6 +303,17 @@ const whaleShipApp = {
         })
     },
 
+    isPirateCollision() {
+        return this.pirates.some(elm => {
+            return (
+                this.whalerShip.whalerShipPos.x + this.whalerShip.whalerShipSize.w >= elm.piratePos.x &&
+                this.whalerShip.whalerShipPos.x <= elm.piratePos.x + elm.pirateSize.w &&
+                this.whalerShip.whalerShipPos.y + this.whalerShip.whalerShipSize.h >= elm.piratePos.y &&
+                this.whalerShip.whalerShipPos.y + this.whalerShip.whalerShipSize.h / 2 <= elm.piratePos.y + elm.pirateSize.h
+            )
+        })
+    },
+
     scoreIncreaser() {
         if (this.lifesCounter === 1) {
             this.score = this.fishesCounter * 10 + this.whalesCounter * 1000
@@ -293,10 +323,34 @@ const whaleShipApp = {
         document.querySelector('#score-counter').innerHTML = this.score
     },
 
-    gameOver() {
-        clearInterval(this.interval)
-        document.querySelector('#alert').innerHTML = ' '
-        document.querySelector('#lifes-counter').innerHTML = 'THOU SUNKST THE SHIP!'
-    }
+    getCredits() {
+        document.querySelector('#credits1').innerHTML = 'Code & Design: Rubén B'
+        document.querySelector('#credits2').innerHTML = 'Additional code by:'
+        document.querySelector('#credits3').innerHTML = 'Jadde, Juan, Santi, Dan'
+        document.querySelector('#credits4').innerHTML = 'Code guidelines: Germán'
+        document.querySelector('#credits5').innerHTML = 'Music: HUIDA by Brezo<li>CC BY-NC-ND 2023</li>'
+    },
 
+    gameGlory() {
+
+        if (this.fishesCounter >= 1) {
+            clearInterval(this.interval)
+            document.querySelector('#intro').innerHTML = `- Awe!! Hail Mr. Helmsman, bring back home barreled whaleys and those filthy old bones of thy! `
+            document.querySelector('#alert').innerHTML = 'THE RUM IS WAITING!'
+            document.querySelector('#lifes-counter').innerHTML = ' '
+            this.getCredits()
+            document.querySelector("body").style.backgroundColor = "yellow"
+
+        }
+    },
+
+    gameOver() {
+
+        document.querySelector('#alert').innerHTML = ' '
+        document.querySelector('#intro').innerHTML = '<br>SAILOR THOU SUNKST THE SHIP! OWE ME YOUR LIFE!'
+        document.querySelector('#lifes-counter').innerHTML = 'BELOW ZERO SPIRITS'
+        this.getCredits()
+        clearInterval(this.interval)
+
+    }
 }

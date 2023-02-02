@@ -26,7 +26,7 @@
     <canvas></canvas>
 
     <!-- <script src="./js/seagull.js"></script> -->
-    <!-- <script src="./js/pirate-ship.js"></script> -->
+    <script src="./js/Pirate.js"></script>
     <script src="./js/Whaler-ship.js"></script>
     <script src="./js/Rock.js"></script>
     <script src="./js/Islet.js"></script>
@@ -38,9 +38,11 @@
     <script src="./js/app.js"></script>
     <script src="./js/script.js"></script>
 
-    <audio autoplay loop>
+    <audio loop>
         <source src="./audio/BREZO-HUIDA.mp3" type="audio/mpeg">
     </audio>
+
+    <!-- <audio autoplay loop src="./audio/BREZO-HUIDA.mp3"></audio> -->
 
 
     <section class="instructions">
@@ -52,7 +54,8 @@
                     <p class="main">Whaler Ship</p>
                 </div>
 
-                <div class="col"> <br> - "Ahoy Mr. Helmsman, do not dare crash my ship!"</div>
+                <div class="col"> <span id="intro"> - "Ahoy Mr. Helmsman, take home twenty-one whales and do not
+                        dare crash my ship or I'll get you hung!"</span></div>
 
                 <div class="col">
                     <ul>
@@ -65,18 +68,19 @@
 
                 <div class="col">
                     <ul>
-                        <li>Harpoons: Space</li>
                         <li>New Game: N</li>
+                        <li>Play/Pause music: M/P</li>
+                        <li id="credits5">Harpoons: Space</li>
                     </ul>
                 </div>
 
 
                 <div class="col">
                     <ul>
-                        <li>North: Arrow Up</li>
-                        <li>South: Arrow Down</li>
-                        <li>East: Arrow Right</li>
-                        <li>West: Arrow Left</li>
+                        <li id="credits1">North: Arrow Up</li>
+                        <li id="credits2">South: Arrow Down</li>
+                        <li id="credits3">East: Arrow Right</li>
+                        <li id="credits4">West: Arrow Left</li>
 
                     </ul>
                 </div>

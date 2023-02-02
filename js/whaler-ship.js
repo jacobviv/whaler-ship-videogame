@@ -5,8 +5,8 @@ class WhalerShip {
         this.ctx = ctx
         this.canvasSize = canvasSize
 
-        this.image = new Image()
-        this.image.src = './img/whaler-ship.png'
+        // this.image = new Image()
+        // this.image.src = './img/whaler-ship.png'
 
         this.whalerShipSize = { w: 64, h: 45 }
         this.whalerShipPos = {
@@ -15,7 +15,7 @@ class WhalerShip {
         }
         this.harpoons = []
 
-        this.vel = .6
+        this.vel = .4
         this.whalerShipVel = 1.2
 
         this.setListeners()
@@ -29,18 +29,45 @@ class WhalerShip {
             west: false
         }
 
+        this.image = new Image();
+        this.image.src = './img/whaler-ship-sprite.png'
+        this.image.frames = 9;
+        this.image.framesIndex = 0;
+
     }
 
-    draw() {
-        this.ctx.drawImage(this.image, this.whalerShipPos.x, this.whalerShipPos.y, this.whalerShipSize.w, this.whalerShipSize.h)
+    draw(framesCounter) {
+        this.ctx.drawImage(
+            this.image,
+            this.image.width / this.image.frames * this.image.framesIndex,
+            0,
+            this.image.width / this.image.frames,
+            this.image.height,
+            this.whalerShipPos.x,
+            this.whalerShipPos.y,
+            this.whalerShipSize.w,
+            this.whalerShipSize.h)
         this.move()
         this.clearHarpoons()
         this.harpoons.forEach(elm => elm.draw())
+        this.animate(framesCounter)
     }
 
     move() {
         if (this.whalerShipPos.x > 0 + this.margin) this.whalerShipPos.x -= this.vel
     }
+
+    animate(framesCounter) {
+        if (framesCounter % 4 == 0) {
+            this.image.framesIndex++;
+        }
+
+        if (this.image.framesIndex >= this.image.frames) {
+            this.image.framesIndex = 0
+        }
+
+    }
+
 
     setListeners() {
 
@@ -60,6 +87,15 @@ class WhalerShip {
 
             if (key === ' ') this.shoot()
 
+            if (key === 'm') {
+                const audio = document.querySelector("audio");
+                audio.volume = .5;
+                audio.play();
+            }
+            if (key === 'p') {
+                const audio = document.querySelector("audio");
+                audio.pause();
+            }
 
         }
 

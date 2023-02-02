@@ -6,6 +6,7 @@ body {
     font-family: 'IBM Plex Mono', 'Courier New', Courier, monospace;
     font-size: .9em;
     font-weight: 500;
+    background-color: white;
 }
 
 /* 
@@ -29,7 +30,7 @@ p {
 }
 
 .instructions {
-    margin: 0;
+    margin-top: 10px;
 }
 
 .main {
@@ -57,3 +58,5 @@ p {
 #score-counter {
     font-weight: bold;
 }
+
+li {}
