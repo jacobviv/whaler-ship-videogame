@@ -28,7 +28,7 @@ class Pirate {
         this.bullets.forEach(elm => elm.draw())
         this.ctx.drawImage(this.image, this.piratePos.x, this.piratePos.y, this.pirateSize.w, this.pirateSize.h)
         this.clear()
-        if (framesCounter % 100 === 0) { this.shoot() }
+        if (framesCounter % 90 === 0) { this.shoot() }
         if (this.piratePos.y > this.whalerShipPos.y + this.whalerShipSize.h) {
             this.directionUp = true
         } else { false }
