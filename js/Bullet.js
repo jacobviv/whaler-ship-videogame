@@ -15,7 +15,7 @@ class Bullet {
 
         this.bulletsSize = { w: 5, h: 5 }
 
-        this.vel = 2
+        this.vel = 3
 
         this.bullets = bullets
 
