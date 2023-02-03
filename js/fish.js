@@ -22,7 +22,7 @@ class Fish {
     }
 
     draw() {
-        this.ctx.fillStyle = 'blue'
+        this.ctx.fillStyle = 'royalblue'
         this.ctx.fillRect(this.fishPos.x, this.fishPos.y, this.fishSize.w, this.fishSize.h)
     }
     move() {

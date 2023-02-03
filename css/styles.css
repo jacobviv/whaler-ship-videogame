@@ -44,19 +44,18 @@ p {
 }
 
 #fishes-counter {
-    color: blue;
+    color: royalblue;
 }
 
 #whales-counter {
-    color: blue;
+    color: royalblue;
 }
 
 #lifes-counter {
-    color: red;
+    color: royalblue;
+    font-weight: bold;
 }
 
 #score-counter {
     font-weight: bold;
 }
-
-li {}

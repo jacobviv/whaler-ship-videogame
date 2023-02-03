@@ -1,12 +1,9 @@
 class WhalerShip {
 
-    constructor(ctx, canvasSize) {
+    constructor(ctx, canvasSize, pirates) {
 
         this.ctx = ctx
         this.canvasSize = canvasSize
-
-        // this.image = new Image()
-        // this.image.src = './img/whaler-ship.png'
 
         this.whalerShipSize = { w: 64, h: 45 }
         this.whalerShipPos = {
@@ -29,11 +26,10 @@ class WhalerShip {
             west: false
         }
 
-        this.image = new Image();
+        this.image = new Image()
         this.image.src = './img/whaler-ship-sprite.png'
-        this.image.frames = 9;
-        this.image.framesIndex = 0;
-
+        this.image.frames = 9
+        this.image.framesIndex = 0
     }
 
     draw(framesCounter) {
@@ -68,7 +64,6 @@ class WhalerShip {
 
     }
 
-
     setListeners() {
 
         document.onkeydown = evt => {
@@ -88,15 +83,14 @@ class WhalerShip {
             if (key === ' ') this.shoot()
 
             if (key === 'm') {
-                const audio = document.querySelector("audio");
-                audio.volume = .5;
-                audio.play();
+                const audio = document.querySelector("audio")
+                audio.volume = 1
+                audio.play()
             }
             if (key === 'p') {
-                const audio = document.querySelector("audio");
-                audio.pause();
+                const audio = document.querySelector("audio")
+                audio.pause()
             }
-
         }
 
         document.onkeyup = evt => {
