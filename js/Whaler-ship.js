@@ -83,14 +83,22 @@ class WhalerShip {
             if (key === ' ') this.shoot()
 
             if (key === 'm') {
-                const audio = document.querySelector("audio")
+                const audio = document.querySelector(".audio1")
                 audio.volume = 1
                 audio.play()
             }
-            if (key === 'p') {
-                const audio = document.querySelector("audio")
-                audio.pause()
+
+            if (key === 'w') {
+                const audio = document.querySelector(".audio2")
+                audio.volume = 1
+                audio.play()
             }
+
+            if (key === 'p') {
+                const audioElements = document.querySelectorAll("audio.audio1, audio.audio2")
+                audioElements.forEach(audio => audio.pause())
+            }
+
         }
 
         document.onkeyup = evt => {
@@ -137,12 +145,10 @@ class WhalerShip {
 
     shoot() {
         this.harpoons.push(new Harpoon(this.ctx, this.canvasSize, this.whalerShipPos, this.whalerShipSize))
-        console.log(this.harpoons)
     }
 
     clearHarpoons() {
         this.harpoons = this.harpoons.filter(elm => elm.harpoonPos.y < this.whalerShipPos.y + this.whalerShipSize.h)
     }
-
 
 }   
