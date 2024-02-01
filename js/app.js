@@ -347,7 +347,7 @@ const whaleShipApp = {
         document.querySelector('#credits2').innerHTML = 'More code by Jadde, Juan'
         document.querySelector('#credits3').innerHTML = 'Santi, Dan, Iván & Gon.'
         document.querySelector('#credits4').innerHTML = 'Code guidelines: Germán'
-        document.querySelector('#credits5').innerHTML = 'Music: HUIDA by Brezo<a href="https://brezo1.bandcamp.com/album/huida"> +</a>'
+        document.querySelector('#credits5').innerHTML = 'Music by Max-o-matic'
     },
 
     dificultyUpper() {
